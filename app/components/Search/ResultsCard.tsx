@@ -8,7 +8,7 @@ export default async function ResultsCard({
   query: any;
 }) {
   console.log(query);
-  const gamesArray = await getGamesBySearch(query);
+  const games = await getGamesBySearch(query);
   if (games && games.length > 0) {
     const gamesWithCovers = await Promise.all(games.map(async (game) => {
       const coverObject = await getCoverArtByGameID(game.id);
