@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  username String
+  name  String?
+  authUID String @unique
+  posts Post[]
+  comments Comment []
+  commentReactions CommentReaction[]
+  postReactions PostReaction[]
+}
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean   @default(false)
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  Int
+  comments  Comment[]
+  reactions PostReaction[]  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  text      String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    Int
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  reactions CommentReaction[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())  
+}
+
+//JOIN Tables
+
+enum Reactions {
+  LIKE
+  DISLIKE
+  LAUGH
+  CRY
+  ANGRY
+}
+
+model CommentReaction {
+  id Int @id @default(autoincrement())
+  reactionType Reactions @default(LIKE)   
+  reactionDate DateTime @default(now())
+  author User @relation(fields: [authorId], references: [id])
+  authorId Int
+  comment Comment @relation(fields: [commentId], references: [id])
+  commentId Int
+}
+
+model PostReaction {
+  id Int @id @default(autoincrement())
+  reactionType Reactions @default(LIKE)   
+  reactionDate DateTime @default(now())
+  author User @relation(fields: [authorId], references: [id])
+  authorId Int
+  post Post @relation(fields: [postId], references: [id])
+  postId Int
+}

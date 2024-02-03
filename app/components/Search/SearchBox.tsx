@@ -1,9 +1,7 @@
 'use client';
 import React from "react";
-import { Input } from "@nextui-org/react";
-import { SearchIcon } from "./SearchIcon";
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { useDebouncedCallback } from 'use-debounce';
+import { useDebouncedCallback } from "use-debounce";
 
 export default function SearchBox() {
   const searchParams = useSearchParams();
@@ -11,7 +9,7 @@ export default function SearchBox() {
   const { replace } = useRouter();
 
   const handleSearch = useDebouncedCallback((term) => {
-    const re = /^[A-Za-z]+$/;
+    const re = /^[A-Za-z0-9\s]+([A-Za-z0-9\s\-_.,'&]+)*$/;
     if (term === "" || re.test(term)){    
     const params = new URLSearchParams(searchParams);
     if (term) {

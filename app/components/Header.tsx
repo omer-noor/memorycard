@@ -23,7 +23,7 @@ export default async function Header() {
   const isSupabaseConnected = canInitSupabaseClient();
 
   return (
-    <div className="w-full max-w-6xl flex justify-between items-center p-3 text-sm">
+    <div className="w-full flex justify-between items-center p-3 text-sm">
     <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
     <Navbar>
       <NavbarBrand>
