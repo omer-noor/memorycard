@@ -1,6 +1,7 @@
 import { Card, CardBody, Image, Button } from "@nextui-org/react";
 import { Game } from "@/app/interfaces/interfaces";
 import { getGamesBySearch, getCoverArtByGameID } from '@/app/providers/GameApiProvider'
+import Link from "next/link";
 
 export default async function ResultsCard({
   query,
@@ -20,10 +21,13 @@ export default async function ResultsCard({
       <>
         <div className="box-content">
           {gamesWithCovers.map((game: Game, id: any) => (
+            
             <Card
               className="border bg-indigo-900 rounded-lg hover:bg-indigo-600"
               shadow="sm"
               isHoverable={true}
+              href = {`/game?gameID=${game.id}`}
+              as={Link}
             >
               <CardBody className="[&&]:py-1 pl-1 truncate">
                 <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center ">
@@ -48,6 +52,7 @@ export default async function ResultsCard({
                 </div>
               </CardBody>
             </Card>
+            
           ))}
         </div>
       </>)
