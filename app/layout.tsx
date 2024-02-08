@@ -17,11 +17,9 @@ export const metadata = {
 
 
 
-export default function RootLayout({
-  searchmodal,
+export default function RootLayout({  
   children,
-}: {
-  searchmodal: React.ReactNode;
+}: {  
   children: React.ReactNode;
 }) {
   return (
