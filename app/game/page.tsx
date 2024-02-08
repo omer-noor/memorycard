@@ -13,8 +13,7 @@ export default async function GamePage({
     const coverUrl = coverObject?.url.replace('t_thumb', 't_cover_big')
     const backgroundObject = game?.id ? await getBackgroundImageByGameId(game?.id) : null;
     const backgroundUrl = backgroundObject?.url.replace('t_thumb', 't_1080p')
-    const platforms = game?.genres ? await  getPlatformsByIDs(game?.platforms) : []
-    console.log(platforms)
+    const platforms = game?.genres ? await  getPlatformsByIDs(game?.platforms) : []    
 
     return (
         <div className="flex flex-col pl-10 pt-10 w-full">

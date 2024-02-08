@@ -3,15 +3,7 @@ import ResultsCard from "./ResultsCard";
 import SearchBox from "./SearchBox";
 import { useRouter } from 'next/navigation';
 
-export default async function SeachContainer({
-    searchParams,
-  }: {
-    searchParams?: {
-      query?: string;
-      page?: string;
-    };
-  }) {    
-    const query = searchParams?.query || '';
+export default async function SearchContainer({query}:{query:string}) {   
     
     return (
         <>

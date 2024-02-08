@@ -25,6 +25,9 @@ model Post {
   id        Int       @id @default(autoincrement())
   title     String
   content   String?
+  spoilers  Boolean   @default(false)
+  rating    Int
+  gameId    String
   published Boolean   @default(false)
   author    User      @relation(fields: [authorId], references: [id])
   authorId  Int

@@ -49,9 +49,8 @@ export default function Signup({
               username: username
             },
           },
-        });
+        });        
         
-        console.log(data.user?.id)
         // Define user object for Prisma
         const userObject:Prisma.UserCreateInput = {
             authUID: data.user?.id ?? "",
@@ -61,8 +60,8 @@ export default function Signup({
         };
 
         // Create user in DB
-        const res = await prisma.user.create({ data: userObject });       
-        console.log(res)         
+        const res = await prisma.user.create({ data: userObject });      
+              
       }
       catch (error) {
         console.log(error)
