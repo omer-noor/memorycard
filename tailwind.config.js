@@ -19,6 +19,9 @@ module.exports = {
       },
     },
   },
+  variants: {
+    fill: ['hover', 'focus'], 
+  },
   darkMode: "class",
   plugins: [nextui()],
 };

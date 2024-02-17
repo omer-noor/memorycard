@@ -1,6 +1,6 @@
 export default async function Footer() {   
     return (
-        <footer className="sticky top-[100vh] border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
+        <footer className="sticky top-[100vh] mt-2 border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
             <p>
                 Created by{" "}
                 <a

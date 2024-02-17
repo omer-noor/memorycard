@@ -5,75 +5,7 @@ import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import prisma from "@/db"
 
-export default async function ReviewForm(props:{gameId:number, gameName:string, gameCover: string}) {
-
-    const gameIdString = props.gameId.toString();     
-    console.log(props.gameName)
-    console.log(props.gameCover)
-    
-    if (!gameIdString) throw new Error('No Game ID');
-
-    const getUser = async () => {
-        "use server"
-        try {
-            const cookieStore = cookies();
-            const supabase = createClient(cookieStore);
-
-            const { data: { user } } = await supabase.auth.getUser();
-            return user;
-        } catch (error) {
-            console.error("Error getting user:", error);
-            throw error; // Consider how you want to handle errors from getUser
-        }
-    }
-
-    const signIn = async (formData: FormData) => {
-        "use server"
-        try {            
-            const title = formData.get("review-title") as string || "";
-            const text = formData.get("review-text") as string;
-            const rating = formData.get("review-rating") as string; 
-
-            const dbUser = await getUser();
-
-            if (!dbUser) throw new Error('User not found');
-
-            const user = await prisma.user.findUnique({
-                where: {
-                    authUID: dbUser.id,
-                },
-            });
-
-            if (!user) throw new Error('Prisma user not found');
-
-            const postObject = {
-                title,
-                content: text,
-                gameId: gameIdString,
-                published: true,
-                createdAt: new Date(),
-                rating: Number(rating),
-                author: {
-                    connect:{
-                        id: user.id
-                    }
-                },
-                gameName: props.gameName,
-                gameCover: props.gameCover           
-            };
-
-            await prisma.post.create({ data: postObject });
-            return redirect("/");
-        } catch (error) {
-            console.error("Error signing in:", error);
-            // Handle the error appropriately, e.g., return an error message, redirect, etc.
-            throw error; // Rethrowing the error might be necessary if you want the calling function to handle it
-        }
-    };
-    
-
-    const user = await getUser();
-    const username = user?.user_metadata.username ?? ""
+export default async function UserForm(props:{any: any}) {
 
     return (
         <>

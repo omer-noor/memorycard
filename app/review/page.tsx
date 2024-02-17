@@ -34,7 +34,7 @@ export default async function Page({
               className="h-1/2 rounded-lg m-4"              
               src={coverUrl}
             />
-            <ReviewForm gameId={gameId??0}/>
+            <ReviewForm gameId={gameId??0} gameName={game?.name??""} gameCover={coverUrl ?? ""}/>
           </div>
         </div>
       </div>
