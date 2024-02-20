@@ -1,14 +1,15 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import prisma from "@/db";
+import { createServerClient } from "@/app/providers/ServerClientProvider";
 import UploadProfileImage, { UserUploadComponent } from "./UserUploadComponent";
 import { Avatar } from "@nextui-org/react";
+import prisma from "@/db";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
-export default async function UserLanding() {
 
-    const cookieStore = cookies()
-    const supabase = createServerComponentClient({ cookies: () => cookieStore })
+export default async function UserLanding() {
+    
+    const supabase = createServerClient();
 
     const {
         data: { user },
