@@ -127,7 +127,7 @@ export default async function Review(props: {
                             className="ml-2"
                             description="Free User"
                             avatarProps={{
-                                src: dbUser?.avatarPath
+                                src: dbUser?.avatarPath ?? ""
                             }}
                         />
                     </div>

@@ -40,7 +40,7 @@ export default async function AuthButton() {
         href={'/user/landing'}
         description="Free User"
         avatarProps={{
-          src: dbUser?.avatarPath
+          src: dbUser?.avatarPath ?? ""
         }}
       />
       <form action={signOut}>
