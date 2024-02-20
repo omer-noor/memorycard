@@ -5,7 +5,7 @@ import UploadProfileImage, { UserUploadComponent } from "./UserUploadComponent";
 import { Avatar } from "@nextui-org/react";
 
 export default async function UserLanding() {
-
+    "use server"
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
 
