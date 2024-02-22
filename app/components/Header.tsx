@@ -10,11 +10,11 @@ import AuthButton from './AuthButton';
 export default async function Header() {
   const cookieStore = cookies();
 
-  const canInitSupabaseClient = () => {
+  const canInitSupabaseClient = async () => {
     // This function is just for the interactive tutorial.
     // Feel free to remove it once you have Supabase connected.
     try {
-      createClient(cookieStore);
+      await createClient();
       return true;
     } catch (e) {
       return false;
@@ -53,7 +53,7 @@ export default async function Header() {
             <Link href="/modalsearch" className="py-1 px-4 mr-5 text-white rounded-md border border-white/40 border-1 no-underline bg-gradient-to-b from-emerald-700 to-lime-500 hover:bg-btn-background-hover">
               Review
             </Link>       
-            {isSupabaseConnected && <AuthButton />}            
+            {await isSupabaseConnected && <AuthButton />}            
           </NavbarContent>          
         </Navbar>
       </nav>

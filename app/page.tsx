@@ -9,7 +9,7 @@ export default async function Index() {
 
   const canInitSupabaseClient = () => {
     try {
-      createClient(cookieStore);
+      createClient();
       return true;
     } catch (e) {
       return false;

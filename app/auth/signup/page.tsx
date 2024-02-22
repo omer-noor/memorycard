@@ -37,7 +37,7 @@ export default function Signup({
 
         const origin = headers().get("origin");
         const cookieStore = cookies();
-        const supabase = createClient(cookieStore);
+        const supabase = await createClient();
 
         const {data, error} = await supabase.auth.signUp({
           email,

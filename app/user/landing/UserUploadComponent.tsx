@@ -6,11 +6,10 @@ import prisma from "@/db";
 import { redirect } from "next/navigation";
 
 
-const cookieStore = cookies();
-const supabase = createClient(cookieStore);
-
-
 export async function UserUploadComponent(props: { userId: number }) {
+
+    const cookieStore = cookies();
+    const supabase = await createClient();
 
     const {
         data: { user },

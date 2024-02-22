@@ -17,7 +17,7 @@ export default async function ReviewForm(props:{gameId:number, gameName:string, 
         "use server"
         try {
             const cookieStore = cookies();
-            const supabase = createClient(cookieStore);
+            const supabase = await createClient();
 
             const { data: { user } } = await supabase.auth.getUser();
             return user;

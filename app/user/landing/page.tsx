@@ -7,9 +7,10 @@ import prisma from "@/db";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 
+
 export default async function UserLanding() {
     
-    const supabase = createServerClient();
+    const supabase = await createClient()
 
     const {
         data: { user },
