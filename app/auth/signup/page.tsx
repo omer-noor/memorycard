@@ -75,7 +75,7 @@ export default function Signup({
   };
 
   return (
-    <div className="flex-1 flex flex-col w-full px-8 justify-center sm:max-w-md gap-2">
+    <div className="flex-1 flex flex-col w-full px-8 m-auto mt-10 justify-center sm:max-w-md gap-2">
 
       <div className="flex justify-center">
         <h1 className="text-3xl">Sign up for an account</h1>

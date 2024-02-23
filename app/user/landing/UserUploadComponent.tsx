@@ -7,16 +7,16 @@ import { redirect } from "next/navigation";
 
 
 export async function UserUploadComponent(props: { userId: number }) {
-
-    const cookieStore = cookies();
-    const supabase = await createClient();
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
+    
     async function upload(formdata: FormData) {
         'use server'
+        const cookieStore = cookies();
+        const supabase = await createClient();
+
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
         console.log("HJERE")
         const file: File | null = formdata.get('file') as unknown as File
         if (!file) {
@@ -36,11 +36,11 @@ export async function UserUploadComponent(props: { userId: number }) {
                 id: props.userId,
             },
             data: {
-                avatarPath: "https://cpzcqtlzpdobhuojedwl.supabase.co/storage/v1/object/public/userImages/"+data?.path,
+                avatarPath: "https://cpzcqtlzpdobhuojedwl.supabase.co/storage/v1/object/public/userImages/" + data?.path,
             },
         })
         return redirect("/user/landing");
-        
+
     }
 
     return (
@@ -60,21 +60,18 @@ export async function UserUploadComponent(props: { userId: number }) {
                     type="file"
                 />
                 <div className="flex flex-row">
-                <p
-                    className="mt-1 text-xs text-gray-400 dark:text-gray-600"
-                    id="file_input_help"
-                >
-                    SVG, PNG, JPG or GIF (MAX. 800x400px).
-                </p>
-                <input type="submit" value="Upload" className="text-xs w-1/10 p-1 h-min rounded-md ml-auto mt-2 !bg-emerald-700 !hover:bg-emerald-200" />
+                    <p
+                        className="mt-1 text-xs text-gray-400 dark:text-gray-600"
+                        id="file_input_help"
+                    >
+                        SVG, PNG, JPG or GIF (MAX. 800x400px).
+                    </p>
+                    <input type="submit" value="Upload" className="text-xs w-1/10 p-1 h-min rounded-md ml-auto mt-2 !bg-emerald-700 !hover:bg-emerald-200" />
                 </div>
             </form>
-            
+
         </div >
     )
 }
-
-
-
 
 export default UserUploadComponent;

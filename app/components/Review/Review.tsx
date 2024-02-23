@@ -2,6 +2,7 @@ import { Divider, Image, User } from "@nextui-org/react";
 import StaticStars from "../StaticStars";
 import prisma from "@/db";
 import LikeCount from "./LikeCount";
+import { createClient } from "@/utils/supabase/server";
 
 export default async function Review(props: {
     reviewObject: {
@@ -19,13 +20,22 @@ export default async function Review(props: {
         updatedAt: Date;
     },
     key: number
-
-
-
 }) {
-    const dbUser = await prisma.user.findUnique({
+    const supabase = await createClient()
+
+    const postAuthor = await prisma.user.findUnique({
         where: {
             id: props.reviewObject.authorId,
+        },
+    })
+
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+    
+    const dbUser = await prisma.user.findUnique({
+        where: {
+            authUID: user?.id ?? "0",
         },
     })
 
@@ -44,13 +54,24 @@ export default async function Review(props: {
         return likeCount?._count.reactions ?? 0     
     }
 
-    const getLikeState = async () => {
+    const getCommentCount = async () => {
         "use server"
+        const comments = await prisma.post.findUnique({
+            where: { id: props.reviewObject.id! },
+            select: {              
+                  comments:true
+            },            
+        })
+        return comments?.comments ?? []   
+    }
+
+    const getLikeState = async () => {
+        "use server"        
         const likeState = await prisma.postReaction.findUnique({
             where: {
                 postId_authorId: {
                     postId: props.reviewObject.id!,
-                    authorId: dbUser?.id!,
+                    authorId: dbUser?.id ?? 0,
                 }
             },
             select: {
@@ -62,7 +83,9 @@ export default async function Review(props: {
 
     const likeState = await getLikeState();
     const likeCount = await getLikeCount();
-    console.log(likeCount)
+    const comments = await getCommentCount();
+    const commentCount = comments.length
+    const isUser = dbUser!==null ? true:false
 
     const createLikeEntry = async (likeState:boolean) => {
         "use server"
@@ -82,9 +105,7 @@ export default async function Review(props: {
                 postId: props.reviewObject.id!,
                 state: true,                
             },
-        })
-        
-        console.log(props.reviewObject.id!)
+        })       
 
         await prisma.post.update({
             where: { id: props.reviewObject.id! },
@@ -123,11 +144,11 @@ export default async function Review(props: {
                         </div>
                         <Divider orientation="vertical" className="ml-2" />
                         <User
-                            name={dbUser?.username}
+                            name={postAuthor?.username}
                             className="ml-2"
                             description="Free User"
                             avatarProps={{
-                                src: dbUser?.avatarPath ?? ""
+                                src: postAuthor?.avatarPath ?? ""
                             }}
                         />
                     </div>
@@ -137,11 +158,14 @@ export default async function Review(props: {
                         {props.reviewObject.content}
                     </p>
                     <div className="flex flex-row items-center gap-2 ml-auto">
-                        {likeState!==null && likeCount!==null &&  <LikeCount createLikeEntry={createLikeEntry} likeState={likeState} likes={likeCount} />}        
+                        {likeState!==null && likeCount!==null &&  <LikeCount createLikeEntry={createLikeEntry} isUser={isUser} likeState={likeState} likes={likeCount} />}        
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
                         </svg>
-                        <p className="-ml-1 text-sm text-gray-500">352</p>
+                        <p className="-ml-1 text-sm text-gray-500">{commentCount}</p>
+                    </div>
+                    <div className="flex flex-col items-center gap-2">
+
                     </div>
                 </div>
             </div>

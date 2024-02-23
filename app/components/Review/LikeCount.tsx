@@ -1,20 +1,33 @@
 'use client'
 import { useEffect, useState } from "react";
 import prisma from "@/db";
+import Link from "next/link";
 
-export default function LikeCount({ createLikeEntry, likeState, likes}: { createLikeEntry: any, likeState: boolean, likes:number }) {
+export default function LikeCount({ createLikeEntry, likeState, likes, isUser }: { createLikeEntry: any, likeState: boolean, likes: number, isUser: boolean }) {
 
     console.log(likes, "LIKE COUNT")
     const [liked, setLiked] = useState(likeState);
     const [likeCountLocal, setlikeCountLocal] = useState(likes);
+    const [showError, setShowError] = useState(false);
 
-    function handleClick() {       
-        if(liked){
-            setlikeCountLocal(likeCountLocal-1)
+    function handleClick() {
+        if (!isUser) {
+            setShowError(true)
+            setTimeout(function(){
+                setShowError(false)
+            }, 5000);
+            return
         }
-        else{setlikeCountLocal(likeCountLocal+1)}
+        if (liked) {
+            setlikeCountLocal(likeCountLocal - 1)
+        }
+        else { setlikeCountLocal(likeCountLocal + 1) }
         setLiked(!liked);
         createLikeEntry(liked);
+    }
+
+    function closeError(){
+        setShowError(false)
     }
 
     const svgStyle = liked
@@ -23,6 +36,14 @@ export default function LikeCount({ createLikeEntry, likeState, likes}: { create
 
     return (
         <>
+            { showError &&
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 w-1/2 py-3 rounded absolute m-auto left-0 right-0 mb-2 z-50" role="alert">
+                <strong className="font-bold">You must log in first!</strong>
+                <span className="block sm:inline"><Link href="/auth/login" className="text-blue-900">Login</Link> or <Link className="text-blue-900" href="/auth/signup">Signup</Link></span>
+                <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+                    <svg className="fill-current h-6 w-6 text-red-500" role="button" onClick={closeError} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
+                </span>
+            </div> }
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

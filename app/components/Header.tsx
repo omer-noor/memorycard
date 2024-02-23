@@ -10,18 +10,19 @@ import AuthButton from './AuthButton';
 export default async function Header() {
   const cookieStore = cookies();
 
-  const canInitSupabaseClient = async () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
+  const canGetUser = async () => {
     try {
-      await createClient();
-      return true;
+      const supabase = await createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      return user != null ? true : false
     } catch (e) {
       return false;
     }
   };
 
-  const isSupabaseConnected = canInitSupabaseClient();
+  const isUser = canGetUser();
 
   return (
     <div className="w-full flex justify-between items-center p-3 text-sm">
@@ -49,12 +50,12 @@ export default async function Header() {
               </Link>
             </NavbarItem>
           </NavbarContent>
-          <NavbarContent justify="end">     
-            <Link href="/modalsearch" className="py-1 px-4 mr-5 text-white rounded-md border border-white/40 border-1 no-underline bg-gradient-to-b from-emerald-700 to-lime-500 hover:bg-btn-background-hover">
+          <NavbarContent justify="end">
+            {await isUser && <Link href="/modalsearch" className="py-1 px-4 mr-5 text-white rounded-md border border-white/40 border-1 no-underline bg-gradient-to-b from-emerald-700 to-lime-500 hover:bg-btn-background-hover">
               Review
-            </Link>       
-            {await isSupabaseConnected && <AuthButton />}            
-          </NavbarContent>          
+            </Link>}
+            <AuthButton />
+          </NavbarContent>
         </Navbar>
       </nav>
     </div>
