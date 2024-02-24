@@ -3,6 +3,10 @@ import StaticStars from "../StaticStars";
 import prisma from "@/db";
 import LikeCount from "./LikeCount";
 import { createClient } from "@/utils/supabase/server";
+import SmallButton from "../SmallButton";
+import CommentContainer from "./CommentContainer";
+import router from "next/router";
+import { redirect } from "next/navigation";
 
 export default async function Review(props: {
     reviewObject: {
@@ -32,7 +36,7 @@ export default async function Review(props: {
     const {
         data: { user },
     } = await supabase.auth.getUser();
-    
+
     const dbUser = await prisma.user.findUnique({
         where: {
             authUID: user?.id ?? "0",
@@ -44,29 +48,43 @@ export default async function Review(props: {
         const likeCount = await prisma.post.findUnique({
             where: { id: props.reviewObject.id! },
             select: {
-              _count: {
-                select: {
-                  reactions: { where: { state: true } },
+                _count: {
+                    select: {
+                        reactions: { where: { state: true } },
+                    },
                 },
-              },
             },
         })
-        return likeCount?._count.reactions ?? 0     
+        return likeCount?._count.reactions ?? 0
     }
 
-    const getCommentCount = async () => {
+    const getComments = async () => {
         "use server"
         const comments = await prisma.post.findUnique({
             where: { id: props.reviewObject.id! },
-            select: {              
-                  comments:true
-            },            
+            include: {
+                comments: {
+                    include:{
+                        author:true
+                    }
+                }
+            },
         })
-        return comments?.comments ?? []   
+        return comments?.comments ?? []
+    }
+
+    const getCommentAuthor = async (comment: { authorId: any; }) => {
+        "use server"
+        const commentAuthor = await prisma.user.findUnique({
+            where: {
+                id: comment.authorId
+            },
+        })
+        return commentAuthor
     }
 
     const getLikeState = async () => {
-        "use server"        
+        "use server"
         const likeState = await prisma.postReaction.findUnique({
             where: {
                 postId_authorId: {
@@ -77,17 +95,30 @@ export default async function Review(props: {
             select: {
                 state: true
             }
-        })        
+        })
         return likeState?.state ?? false
+    }
+
+    const submitCommentForm = async (comment:string) =>{        
+        "use server"
+        const create = await prisma.comment.create({
+            data: {
+                text: comment,
+                postId: props.reviewObject.id!,
+                authorId: dbUser?.id!
+            },
+        })
+        return redirect("/");
     }
 
     const likeState = await getLikeState();
     const likeCount = await getLikeCount();
-    const comments = await getCommentCount();
+    const comments = await getComments();
+    console.log(comments)
     const commentCount = comments.length
-    const isUser = dbUser!==null ? true:false
+    const isUser = dbUser !== null ? true : false
 
-    const createLikeEntry = async (likeState:boolean) => {
+    const createLikeEntry = async (likeState: boolean) => {
         "use server"
         const upsertPostReaction = await prisma.postReaction.upsert({
             where: {
@@ -103,21 +134,21 @@ export default async function Review(props: {
                 // Data to create a new postReaction if it doesn't exist
                 authorId: dbUser?.id!,
                 postId: props.reviewObject.id!,
-                state: true,                
+                state: true,
             },
-        })       
+        })
 
         await prisma.post.update({
             where: { id: props.reviewObject.id! },
-            data:{
-               reactions: {
-                connect: {
-                    postId_authorId: {
-                      postId: upsertPostReaction.postId,
-                      authorId: upsertPostReaction.authorId,
+            data: {
+                reactions: {
+                    connect: {
+                        postId_authorId: {
+                            postId: upsertPostReaction.postId,
+                            authorId: upsertPostReaction.authorId,
+                        },
                     },
-                  },
-               }          
+                }
             }
         })
     };
@@ -157,18 +188,12 @@ export default async function Review(props: {
                     <p>
                         {props.reviewObject.content}
                     </p>
-                    <div className="flex flex-row items-center gap-2 ml-auto">
-                        {likeState!==null && likeCount!==null &&  <LikeCount createLikeEntry={createLikeEntry} isUser={isUser} likeState={likeState} likes={likeCount} />}        
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
-                        </svg>
-                        <p className="-ml-1 text-sm text-gray-500">{commentCount}</p>
-                    </div>
-                    <div className="flex flex-col items-center gap-2">
-
+                    
+                    <div className="flex flex-col items-center mt-5">
+                      {comments && <CommentContainer commentCount={commentCount} isUser={isUser} createLikeEntry={createLikeEntry} likeState={likeState} likeCount={likeCount} submitCommentForm={submitCommentForm} comments={comments}/>}
                     </div>
                 </div>
             </div>
         </div>
-    ) 
+    )
 }
