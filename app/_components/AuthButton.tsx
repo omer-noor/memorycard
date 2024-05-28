@@ -37,14 +37,14 @@ export default async function AuthButton() {
         name={dbUser?.username}
         className="mr-2"
         as={Link}
-        href={'/user/landing'}
+        href={'/user/account'}
         description="Free User"
         avatarProps={{
           src: dbUser?.avatarPath ?? ""
         }}
       />
       <form action={signOut}>
-        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
+        <button className="py-2 px-4 rounded-md no-underline bg-sky-500 hover:bg-sky-600">
           Logout
         </button>
       </form>
@@ -53,7 +53,7 @@ export default async function AuthButton() {
     <>
       <Link
         href="/auth/login"
-        className="py-2 px-3 flex rounded-md no-underline bg-gray-900 hover:bg-gray-800"
+        className="py-2 px-3 flex rounded-md no-underline bg-sky-900 hover:bg-gray-800"
       >
         Login
       </Link>

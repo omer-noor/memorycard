@@ -1,27 +1,17 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import ReviewModalContainer from "./review/page";
-import ReviewContainer from "./components/Review/ReviewContainer";
+import ReviewContainer from "./_components/Review/ReviewContainer";
+import GameComponent from "./_components/Game/GameComponent";
+import { Divider } from "@nextui-org/react";
 
 
-export default async function Index() {
-  const cookieStore = cookies();
-
-  const canInitSupabaseClient = () => {
-    try {
-      createClient();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
-
-  const isSupabaseConnected = canInitSupabaseClient();
-
+export default function Index() {
   return (
     <>
-    <div className="flex-1 max-w-6xl flex flex-col gap-20 items-center">    
-      <ReviewContainer/>
+    <div className="flex-1 max-w-6xl flex flex-col items-center">    
+      <GameComponent/>      
+      <ReviewContainer containerTitle="Recent Reviews"/>
     </div>    
     </>
   );

@@ -1,6 +1,6 @@
 import { Card, CardBody, Image, Button } from "@nextui-org/react";
-import { Game } from "@/app/interfaces/interfaces";
-import { getGamesBySearch, getCoverArtByGameID } from '@/app/providers/GameApiProvider'
+import { Game } from "@/app/_interfaces/interfaces";
+import { getGamesBySearch, getCoverArtByGameID } from '@/app/_services/GameApiService'
 import Link from "next/link";
 import SmallButton from "../SmallButton";
 

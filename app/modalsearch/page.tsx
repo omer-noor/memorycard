@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation'
-import SearchContainer from '../components/Search/SeachContainer'
-import BackButton from '../components/BackButton';
+import SearchContainer from '../_components/Search/SeachContainer'
+import BackButton from '../_components/BackButton';
 
 export default function Page({
   searchParams,
@@ -14,7 +14,7 @@ export default function Page({
   return (
     <>
 
-      <div className="flex flex-col border border-white rounded-lg sm:w-full md:w-3/5 p-5 pr-7 m-auto mt-10">
+      <div className="flex flex-col border border-white rounded-lg sm:w-full md:w-3/5 p-5 pr-7 m-auto mt-10 bg-blue-950/70">
         <div className="flex flex-row ml-4 gap-2 mb-5">
           <BackButton />
           <div className="flex flex-col ml-4 items-start">

@@ -17,7 +17,6 @@ export async function UserUploadComponent(props: { userId: number }) {
             data: { user },
         } = await supabase.auth.getUser();
 
-        console.log("HJERE")
         const file: File | null = formdata.get('file') as unknown as File
         if (!file) {
             throw new Error('No file uploaded')
@@ -39,7 +38,7 @@ export async function UserUploadComponent(props: { userId: number }) {
                 avatarPath: "https://cpzcqtlzpdobhuojedwl.supabase.co/storage/v1/object/public/userImages/" + data?.path,
             },
         })
-        return redirect("/user/landing");
+        return redirect("/user/account");
 
     }
 

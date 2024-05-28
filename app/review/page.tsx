@@ -1,7 +1,7 @@
 import ReviewForm from "./ReviewForm";
-import BackButton from "../components/BackButton";
+import BackButton from "../_components/BackButton";
 import { Image } from "@nextui-org/react";
-import { getGameById, getCoverArtByGameID } from "../providers/GameApiProvider";
+import { getGameById, getCoverArtByGameID } from "../_services/GameApiService";
 
 export default async function Page({
   searchParams,
@@ -15,7 +15,6 @@ export default async function Page({
   ? new Date(game.first_release_date * 1000).getFullYear().toString()
   : "";
   const gameId = game?.id
-  console.log(gameId)
   return (
     <>
       <div className="flex flex-col border border-white min-h-1/2 rounded-lg sm:w-full md:w-3/5 p-5 pr-7 m-auto mt-10">

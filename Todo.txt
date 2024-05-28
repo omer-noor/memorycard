@@ -1,0 +1,17 @@
+TODO:
+
+---Optimization---
+-Rewrite data fetching functions to use either fetch requests (which are cached automatically) or wrap them in React's cache functionality.
+-
+
+---Backend Improvements---
+-Add middleware to protect routes. For example a users account information page.
+-Add greater test coverage by adding more unit tests and adding integration tests.
+
+
+---Features To Add---
+-Allow for a user to select their favourite games on their profile.
+-Allow for users to comment.
+-Get top games dynamically.
+-Look up games by tag or platform.
+-Add friends, view their reviews/activity at the top of the homepage.

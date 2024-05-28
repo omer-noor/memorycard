@@ -67,7 +67,7 @@ export default function Signup({
         console.log(error)
         return redirect("/auth/signup?message=Could not authenticate user");
       }
-      return redirect("/auth/signup?message=Check email to continue sign in process");
+      return redirect("/");
     }
     else {
       return redirect("/auth/signup?message=Invalid Form Data");
@@ -75,7 +75,7 @@ export default function Signup({
   };
 
   return (
-    <div className="flex-1 flex flex-col w-full px-8 m-auto mt-10 justify-center sm:max-w-md gap-2">
+    <div className="flex-1 flex flex-col w-full px-8 m-auto mt-10 justify-center sm:max-w-md gap-2 bg-blue-950/70">
 
       <div className="flex justify-center">
         <h1 className="text-3xl">Sign up for an account</h1>

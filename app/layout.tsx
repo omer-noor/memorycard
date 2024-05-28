@@ -1,7 +1,7 @@
-import { GeistSans } from "geist/font/sans";
+import { DM_Sans, Karla, Rubik } from "next/font/google";
 import "./globals.css";
-import Header from "@/app/components/Header";
-import Footer from "./components/Footer";
+import Header from "@/app/_components/Header";
+import Footer from "./_components/Footer";
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import { Providers } from "./providers";
 
@@ -15,7 +15,7 @@ export const metadata = {
   description: "A video game review site",
 };
 
-
+const globalFont = DM_Sans({subsets:['latin'],display:"swap",weight:"300"})
 
 export default function RootLayout({  
   children,
@@ -23,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="dark bg-background text-foreground">        
+    <html lang="en" className={globalFont.className}>
+      <body className="dark bg-gradient-to-r from-sky-700 to-sky-950 text-foreground">        
           <main className="min-h-screen flex flex-col items-center">
             <div className="w-2/3">
               <Header />

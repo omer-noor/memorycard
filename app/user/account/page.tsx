@@ -1,6 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { createServerClient } from "@/app/providers/ServerClientProvider";
 import UploadProfileImage, { UserUploadComponent } from "./UserUploadComponent";
 import { Avatar } from "@nextui-org/react";
 import prisma from "@/db";
@@ -25,7 +24,7 @@ export default async function UserLanding() {
     return (
         <div className="flex flex-col pl-10 pt-10">
             <h1 className="text-4xl font-bold">User Information</h1>
-            <div className="flex flex-col border rounded-lg gap-2 mt-5 p-6">
+            <div className="flex flex-col border rounded-lg gap-2 mt-5 p-6  bg-blue-950/70">
                 <div className="flex flex-row gap-5">
                     <Avatar src={dbUser?.avatarPath ?? ""} size="lg" />
                     <div className="flex flex-col gap-0">

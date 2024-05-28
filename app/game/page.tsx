@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, Image } from "@nextui-org/react";
-import { getBackgroundImageByGameId, getCoverArtByGameID, getGameById, getGenresByIDs, getPlatformsByIDs } from "../providers/GameApiProvider";
-import { Genre } from "../interfaces/interfaces";
+import { getBackgroundImageByGameId, getCoverArtByGameID, getGameById, getGenresByIDs, getPlatformsByIDs } from "../_services/GameApiService";
+import { Genre } from "../_interfaces/interfaces";
 
 export default async function GamePage({
     searchParams,

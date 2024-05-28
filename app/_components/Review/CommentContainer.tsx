@@ -8,13 +8,13 @@ import { Comment } from "./ReviewInterfaces";
 
 
 interface CommentContainerProps {
-    submitCommentForm: (event: React.FormEvent<HTMLFormElement> | any) => void; // Adjust according to the actual parameter
+    submitCommentForm: (event: React.FormEvent<HTMLFormElement> | any) => void;
     comments: Comment[];   
-    likeState: boolean; // Optional if not always required
-    likeCount: number; // Optional if not always required
-    createLikeEntry?: any; // Optional, adjust `likeData` type as needed
-    isUser?: boolean; // Optional if not always required
-    commentCount?: number; // Optional if not always required
+    likeState: boolean; 
+    likeCount: number; 
+    createLikeEntry?: any; 
+    isUser?: boolean; 
+    commentCount?: number;
 }
 
 const CommentContainer: React.FC<CommentContainerProps> = ({
@@ -43,7 +43,7 @@ const CommentContainer: React.FC<CommentContainerProps> = ({
                 <p className="-ml-1 text-sm text-gray-500">{commentCount}</p>
             </div>
             {showComments && <>
-                <CommentForm submitCommentForm={submitCommentForm} />
+                <CommentForm submitCommentForm={submitCommentForm} setShowComments={setShowComments} />
                 {comments.map((comment, index) => (
                     <>
                         <CommentCard comment={comment} />

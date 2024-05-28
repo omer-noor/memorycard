@@ -1,5 +1,5 @@
 import { env } from "process";
-import { Cover, Game, Genre, Platform, Screenshot } from "../interfaces/interfaces";
+import { Cover, Game, Genre, Platform, Screenshot } from "../_interfaces/interfaces";
 import apicalypse from "apicalypse";
 
 export async function getGamesBySearch(searchTerm: string): Promise<Game[] | null> {

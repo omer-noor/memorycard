@@ -4,8 +4,13 @@ import prisma from "@/db";
 import Link from "next/link";
 import SmallButton from "../SmallButton";
 
-export default function CommentForm({submitCommentForm}:{submitCommentForm:any}) {
+interface CommentFormProps {
+    submitCommentForm: (event: React.FormEvent<HTMLFormElement> | any) => void;
+    setShowComments: (value: boolean) => void;
+}
 
+export default function CommentForm(props: CommentFormProps){
+    const { submitCommentForm, setShowComments } = props;
     const [inputClass, setInputClass] = useState("cursor-not-allowed bg-gray-900");
     const [comment, setComment] = useState("")    
 
@@ -26,6 +31,7 @@ export default function CommentForm({submitCommentForm}:{submitCommentForm:any})
     
     const handleCancel = () =>{
         setComment('')
+        setShowComments(false)
         setInputClass("cursor-not-allowed bg-gray-900")
     }
 

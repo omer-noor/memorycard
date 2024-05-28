@@ -9,7 +9,7 @@ function SmallButton({
 }: React.PropsWithChildren<{
     classNames?: string;
     link?: string;
-    onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void; // Allow onClick to optionally receive an event argument
+    onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void; 
 }>) {    
   const router = useRouter();
   const linkHref = link ?? "/";  
@@ -17,9 +17,9 @@ function SmallButton({
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (onClick) {
-      onClick(event); // Pass the event to onClick if it's provided
+      onClick(event);
     } else if (link) {
-      router.push(linkHref); // Navigate to the provided link if no onClick is provided
+      router.push(linkHref);
     }
   };
 

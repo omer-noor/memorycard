@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export default function LikeCount({ createLikeEntry, likeState, likes, isUser }: { createLikeEntry: any, likeState: boolean, likes: number, isUser: boolean }) {
 
-    console.log(likes, "LIKE COUNT")
     const [liked, setLiked] = useState(likeState);
     const [likeCountLocal, setlikeCountLocal] = useState(likes);
     const [showError, setShowError] = useState(false);
@@ -51,8 +50,7 @@ export default function LikeCount({ createLikeEntry, likeState, likes, isUser }:
                 fill={liked ? "red" : "none"} // Conditional fill based on liked state
                 strokeWidth={liked ? "0" : "1.5"} // Conditional stroke width based on liked state
                 stroke="currentColor"
-                onClick={handleClick}
-            // Hover styles can be handled in external CSS if needed
+                onClick={handleClick}            
             >
                 <path
                     strokeLinecap="round"

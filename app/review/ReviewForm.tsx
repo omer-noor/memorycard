@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import LargeButton from "../components/LargeButton"
+import LargeButton from "../_components/LargeButton"
 import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import prisma from "@/db"
@@ -8,8 +8,6 @@ import prisma from "@/db"
 export default async function ReviewForm(props:{gameId:number, gameName:string, gameCover: string}) {
 
     const gameIdString = props.gameId.toString();     
-    console.log(props.gameName)
-    console.log(props.gameCover)
     
     if (!gameIdString) throw new Error('No Game ID');
 
@@ -23,11 +21,11 @@ export default async function ReviewForm(props:{gameId:number, gameName:string, 
             return user;
         } catch (error) {
             console.error("Error getting user:", error);
-            throw error; // Consider how you want to handle errors from getUser
+            throw error;
         }
     }
 
-    const signIn = async (formData: FormData) => {
+    const leaveReview = async (formData: FormData) => {
         "use server"
         try {            
             const title = formData.get("review-title") as string || "";
@@ -66,8 +64,7 @@ export default async function ReviewForm(props:{gameId:number, gameName:string, 
             return redirect("/");
         } catch (error) {
             console.error("Error signing in:", error);
-            // Handle the error appropriately, e.g., return an error message, redirect, etc.
-            throw error; // Rethrowing the error might be necessary if you want the calling function to handle it
+            throw error;
         }
     };
     
@@ -77,7 +74,7 @@ export default async function ReviewForm(props:{gameId:number, gameName:string, 
 
     return (
         <>
-            <form className="w-full mx-auto px-10" action={signIn}>
+            <form className="w-full mx-auto px-10" action={leaveReview}>
                 <div className="mb-5">
                     <label
                         htmlFor="review-title"
